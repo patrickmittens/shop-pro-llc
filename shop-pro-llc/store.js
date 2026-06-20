@@ -1,7 +1,14 @@
 const fs = require('fs');
 const path = require('path');
 
-const dataDir = path.join(__dirname, 'data');
+// On Render (and similar hosts), persistent storage is a separate "disk"
+// mounted at a fixed folder path. We point our data file there when the
+// DATA_DIR environment variable is set; otherwise we fall back to a local
+// "data" folder next to this file, which is what you'll see when running
+// the site on your own computer.
+const dataDir = process.env.DATA_DIR
+  ? process.env.DATA_DIR
+  : path.join(__dirname, 'data');
 const dataFile = path.join(dataDir, 'inquiries.json');
 
 function ensureStore() {
